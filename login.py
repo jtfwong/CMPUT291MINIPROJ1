@@ -27,8 +27,8 @@ def register(conn,cursor):
         INSERT INTO Members VALUES
         (?,?,?,?);''',
         (username,name,phone,pwd))
+        conn.commit()
         return username,name
     except sqlite3.IntegrityError:
         print('Email already registered')
-    conn.commit()
     return
