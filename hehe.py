@@ -1,5 +1,6 @@
 import sqlite3
 import login
+import menu
 
 class JavinDrive():
     def __init__(self):
@@ -7,6 +8,7 @@ class JavinDrive():
         self.login = False
         self.user = None
         self.name = None
+        self.menu = menu.Menu()
 
         self.conn = sqlite3.connect('./JavinDrive.db')
         self.cursor = self.conn.cursor()
@@ -139,6 +141,8 @@ class JavinDrive():
                 self.user = None
                 self.name = None
                 print('Logged out')
+            if user_input == 'menu':
+                self.menu.showMenu()
 if __name__ == "__main__":
     app = JavinDrive()
     app.app_loop()
