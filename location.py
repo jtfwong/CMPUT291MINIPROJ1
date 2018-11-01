@@ -28,11 +28,10 @@ def findLocation(lcode,conn,cursor):
                 print(i+1,locations[i+page*5])
             print(6, 'More options')
             choice = None
-            while choice == None:
-                try:
-                    choice = int(input('Choice: '))
-                except:
-                    print('Not a valid input, please enter a number')
+            try:
+                choice = int(input('Choice: '))
+            except:
+                print('Not a valid input, please enter a number')
             if choice >= 1 and choice <= 5:
                 return locations[choice+page*5-1]
             elif choice == 6:
