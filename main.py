@@ -145,6 +145,7 @@ class JavinDrive():
                 print(location.findLocation(lcode,self.conn,self.cursor))
             if user_input == 'offer':
                 rides.offerRide(self.user,self.conn,self.cursor)
+                
 if __name__ == "__main__":
     app = JavinDrive()
     app.app_loop()

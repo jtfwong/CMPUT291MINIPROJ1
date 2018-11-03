@@ -31,14 +31,14 @@ def findLocation(lcode,conn,cursor):
             choice = None
             try:
                 choice = int(input('Choice: '))
+                if choice >= 1 and choice <= 5:
+                    return locations[choice+page*5-1]
+                elif choice == 6:
+                    page += 1
+                else:
+                    print('Invalid choice, please choose from selection')
             except:
-                print('Not a valid input, please enter a number')
-            if choice >= 1 and choice <= 5:
-                return locations[choice+page*5-1]
-            elif choice == 6:
-                page += 1
-            else:
-                print('Invalid choice, please choose from selection')
+                print('Not a valid input, please enter a location')
         if location == None:
             print('No locations found with keyword. Please try again')
             return findLocation(input('Location: '),conn,cursor)
