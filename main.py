@@ -2,6 +2,7 @@ import sqlite3
 import login
 import menu
 import location
+import rides
 
 class JavinDrive():
     def __init__(self):
@@ -142,6 +143,8 @@ class JavinDrive():
             if user_input == 'search':
                 lcode = input('Location: ')
                 print(location.findLocation(lcode,self.conn,self.cursor))
+            if user_input == 'offer':
+                rides.offerRide(self.user,self.conn,self.cursor)
 if __name__ == "__main__":
     app = JavinDrive()
     app.app_loop()
