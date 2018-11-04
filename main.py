@@ -3,6 +3,7 @@ import login
 import menu
 import location
 import rides
+import requests
 
 class JavinDrive():
     def __init__(self):
@@ -145,6 +146,10 @@ class JavinDrive():
                 print(location.findLocation(lcode,self.conn,self.cursor))
             if user_input == 'offer':
                 rides.offerRide(self.user,self.conn,self.cursor)
+            if user_input == 'post request':
+                requests.postRequest(self.user,self.conn,self.cursor)
+            if user_input == 'see requests':
+                requests.deleteRequest(self.user,self.conn,self,cursor)
                 
 if __name__ == "__main__":
     app = JavinDrive()
