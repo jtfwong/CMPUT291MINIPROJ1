@@ -5,9 +5,9 @@ def logScreen(conn,cursor):
     password = getpass.getpass('Password: ')
     cursor.execute('''
     SELECT *
-    FROM Members
-    WHERE Members.email = ?
-    AND Members.pwd = ?;''',
+    FROM members
+    WHERE members.email = ?
+    AND members.pwd = ?;''',
     (username,password))
     result = cursor.fetchone()
     if result == None:
@@ -24,7 +24,7 @@ def register(conn,cursor):
     pwd = input('Password: ')
     try:
         cursor.execute('''
-        INSERT INTO Members VALUES
+        INSERT INTO members VALUES
         (?,?,?,?);''',
         (username,name,phone,pwd))
         conn.commit()

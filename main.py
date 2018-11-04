@@ -16,95 +16,95 @@ class JavinDrive():
         self.cursor.executescript('''
         PRAGMA foreign_keys = ON;
 
-        create table if not exists Members(
-        email char(28),
-        name char(28),
-        phone int,
-        pwd char(28),
+        create table if not exists members(
+        email char(15),
+        name char(20),
+        phone char(12),
+        pwd char(6),
         primary key (email));
 
-        create table if not exists Cars(
+        create table if not exists cars(
         cno int,
-        make char(28),
-        model char(28),
+        make char(12),
+        model char(12),
         year int,
         seats int,
-        owner char(28),
+        owner char(15),
         primary key(cno),
-        foreign key (owner) references Members
+        foreign key (owner) references members
         );
 
-        create table if not exists Locations(
+        create table if not exists locations(
         lcode char(5),
-        city char(20),
-        prov char(20),
-        address char(100),
+        city char(16),
+        prov char(16),
+        address char(16),
         primary key (lcode)
         );
 
-        create table if not exists Rides(
+        create table if not exists rides(
         rno int,
         price int,
         rdate date,
         seats int,
-        lugDesc char(20),
+        lugDesc char(10),
         src char(5),
         dest char(5),
-        driver char(28),
+        driver char(15),
         cno int,
         primary key (rno),
-        foreign key (src) references Locations,
-        foreign key (dest) references Locations,
-        foreign key (driver) references Members,
-        foreign key (cno) references Cars
+        foreign key (src) references locations,
+        foreign key (dest) references locations,
+        foreign key (driver) references members,
+        foreign key (cno) references cars
         );
 
-        create table if not exists Bookings(
+        create table if not exists bookings(
         bno int,
-        email char(28),
+        email char(15),
         rno int,
         cost int,
         seats int,
         pickup char(5),
         dropoff char(5),
         primary key (bno),
-        foreign key (rno) references Rides,
-        foreign key (pickup) references Locations,
-        foreign key (dropoff) references Locations
+        foreign key (rno) references rides,
+        foreign key (pickup) references locations,
+        foreign key (dropoff) references locations
         );
 
-        create table if not exists Enroute(
+        create table if not exists enroute(
         rno int,
         lcode char(5),
         primary key (rno,lcode),
-        foreign key (rno) references Rides,
-        foreign key (lcode) references Locations
+        foreign key (rno) references rides,
+        foreign key (lcode) references locations
         );
 
-        create table if not exists Requests(
+        create table if not exists requests(
         rid int,
-        email char(28),
+        email char(15),
         rdate date,
         pickup char(5),
         dropoff char(5),
         amount int,
         primary key (rid),
-        foreign key (email) references Members,
-        foreign key (pickup) references Locations,
-        foreign key (dropoff) references Locations
+        foreign key (email) references members,
+        foreign key (pickup) references locations,
+        foreign key (dropoff) references locations
         );
 
-        create table if not exists Inbox(
-        email char(28),
+        create table if not exists inbox(
+        email char(15),
         msgTimestamp date,
-        sender char(28),
-        content char(150),
+        sender char(15),
+        content text,
         rno int,
         seen char(1),
         primary key (email,msgTimestamp),
-        foreign key (email) references Members,
-        foreign key (sender) references Members,
-        foreign key (rno) references Rides
+        foreign key (email) references members,
+        foreign key (sender) references members,
+        foreign key (rno) references rides
         );
         ''')
         self.conn.commit()

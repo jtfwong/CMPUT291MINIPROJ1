@@ -1,8 +1,8 @@
 def findLocation(lcode,conn,cursor):
     cursor.execute('''
     SELECT *
-    FROM Locations
-    WHERE Locations.lcode = ?;''',
+    FROM locations
+    WHERE locations.lcode = ?;''',
     (lcode,))
     location = cursor.fetchone()
     if location != None:
@@ -10,16 +10,16 @@ def findLocation(lcode,conn,cursor):
     else:
         cursor.execute('''
         SELECT *
-        FROM Locations
-        WHERE Locations.city LIKE ?
+        FROM locations
+        WHERE locations.city LIKE ?
         UNION
         SELECT *
-        FROM Locations
-        WHERE Locations.prov LIKE ?
+        FROM locations
+        WHERE locations.prov LIKE ?
         UNION
         SELECT *
-        FROM Locations
-        WHERE Locations.address LIKE ?;''',
+        FROM locations
+        WHERE locations.address LIKE ?;''',
         ('%'+lcode+'%','%'+lcode+'%','%'+lcode+'%'))
         locations = cursor.fetchall()
         page = 0

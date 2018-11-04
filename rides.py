@@ -16,7 +16,7 @@ def offerRide(user, conn, cursor):
         else:
             try:
                 cno = int(cno)
-                cursor.execute('SELECT * FROM Cars WHERE Cars.cno = ? AND Cars.owner = ?;',
+                cursor.execute('SELECT * FROM cars WHERE cars.cno = ? AND cars.owner = ?;',
                 (cno,user))
                 car = cursor.fetchone()
                 print(car)
@@ -41,9 +41,9 @@ def offerRide(user, conn, cursor):
     en_loc = list()
     for i in range(0,int(num_en)):
         en_loc.append(location.findLocation(input('Enroute location '+str(i)+': '), conn, cursor))
-    cursor.execute('SELECT COUNT(*) FROM Rides;')
+    cursor.execute('SELECT COUNT(*) FROM rides;')
     rno = cursor.fetchone()[0] + 1
-    cursor.execute('INSERT INTO Rides VALUES(?,?,?,?,?,?,?,?,?)',
+    cursor.execute('INSERT INTO rides VALUES(?,?,?,?,?,?,?,?,?)',
     (rno, price, rdate, seats, lugDesc, src[0], dest[0], user, cno))
     conn.commit()
 

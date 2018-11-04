@@ -6,14 +6,14 @@ def postRequest(user, conn, cursor):
     amount = input('Price per seat: $')
     print(rdate,pickup,dropoff,price)
 
-    cursor.execute('SELECT COUNT(*) FROM Requests;')
+    cursor.execute('SELECT COUNT(*) FROM requests;')
     rid = cursor.fetchone()[0] + 1
-    cursor.execute('INSERT INTO Requests VALUES(?,?,?,?,?,?);', rid, user, rdate, pickup, dropoff, amount)
+    cursor.execute('INSERT INTO requests VALUES(?,?,?,?,?,?);', rid, user, rdate, pickup, dropoff, amount)
     conn.commit()
 
 def deleteRequest(user, conn ,cursor):
     print('Type back to exit or delete to remove request')
-    cursor.execute('SELECT * FROM Requests WHERE Requests.email = user')
+    cursor.execute('SELECT * FROM requests WHERE requests.email = user')
     rows = cursor.fetchone()
     print row.keys()
     requests = cursor fetchall()
@@ -32,8 +32,8 @@ def deleteRequest(user, conn ,cursor):
                 if confirm = 'no':
                     cancel = True
                 if confirm = 'yes':
-                    cursor.execute('DELETE FROM Requests WHERE Requests.rno = ?', rno)
-                    cancel =
+                    cursor.execute('DELETE FROM requests WHERE requests.rno = ?', rno)
+                    cancel = True
 
 
 def searchRequest():
