@@ -34,6 +34,7 @@ def deleteRequest(user, conn ,cursor):
                 if confirm = 'yes':
                     cursor.execute('DELETE FROM requests WHERE requests.rno = ?', (rno))
                     cancel = True
+            back = True
 
 
 def searchRequest():
