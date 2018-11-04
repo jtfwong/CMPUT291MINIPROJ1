@@ -14,11 +14,9 @@ def postRequest(user, conn, cursor):
 def deleteRequest(user, conn ,cursor):
     print('Type back to exit or delete to remove request')
     cursor.execute('SELECT * FROM requests WHERE requests.email = ?' (user))
-    rows = cursor.fetchone()
-    print row.keys()
-    requests = cursor fetchall()
+    requests = cursor.fetchall()
     for each in requests:
-        print each["rid"], each["user"], each["rdate"], each["pickup"], each["dropoff"], each["amount"]
+        print(each["rid"], each["user"], each["rdate"], each["pickup"], each["dropoff"], each["amount"])
     back = False
     while not back:
         user_input = input('JavinDrive: ')
@@ -29,13 +27,39 @@ def deleteRequest(user, conn ,cursor):
             while not cancel:
                 rno = input('Enter rno to delete: ')
                 confirm = ('Confirm delete?(yes/no): ')
-                if confirm = 'no':
+                if confirm == 'no':
                     cancel = True
-                if confirm = 'yes':
+                if confirm == 'yes':
                     cursor.execute('DELETE FROM requests WHERE requests.rno = ?', (rno))
                     cancel = True
             back = True
 
 
 def searchRequest():
-    return 1
+    search = location.findLocation(input('Search location keyword: '), conn, cursor)
+    print('Type back to exit or select to take request')
+    cursor.execute('SELECT * FROM requests WHERE requests.pickup = ?'(search))
+    requests = cursor.fetchall()
+    page = 0
+    while page*5 < len(requests):
+        print('Requests: ')
+        for i in range(0,min(5,len(requests)-page*5)):
+            print(i+1,requests[i+page*5])
+        print(6, 'More options')
+        choice = None
+        try:
+            choice = int(input('Choice: '))
+            if choice >= 1 and choice <= 5:
+                selected = requests[choice+page*5-1]
+            elif choice == 6:
+                page += 1
+            else:
+                print('Invalid choice, please choose from selection')
+        except:
+            print('Not a valid input, please enter a request')
+    if requests == None:
+        print('No requests found with keyword. Please try again')
+        search = location.findLocation(input('Search location keyword: '), conn, cursor)
+    content = input('Enter message to poster: ')
+    cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);"(selected[email], user, content, selected[rid], 0))
+    conn.commit()
