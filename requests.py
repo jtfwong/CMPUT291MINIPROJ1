@@ -32,6 +32,7 @@ def deleteRequest(user, conn ,cursor):
                 if confirm == 'yes':
                     cursor.execute('DELETE FROM requests WHERE requests.rid = ?;', (rid,))
                     conn.commit()
+                    print('Request deleted')
                     cancel = True
         back = True
 
@@ -54,6 +55,7 @@ def searchRequest(user, conn, cursor):
                 content = input('Enter message to poster: ')
                 cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');", (selected[1], user, content, selected[0],))
                 conn.commit()
+                print('Message sent')
                 break
             elif choice == 6:
                 page += 1
