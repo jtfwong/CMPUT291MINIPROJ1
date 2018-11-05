@@ -144,8 +144,10 @@ class JavinDrive():
             if user_input == 'search':
                 lcode = input('Location: ')
                 print(location.findLocation(lcode,self.conn,self.cursor))
-            if user_input == 'offer':
+            if user_input == 'offer ride':
                 rides.offerRide(self.user,self.conn,self.cursor)
+            if user_input == 'search ride':
+                rides.searchRide(self.user,self.conn,self.cursor)
             if user_input == 'post request':
                 requests.postRequest(self.user,self.conn,self.cursor)
             if user_input == 'see requests':

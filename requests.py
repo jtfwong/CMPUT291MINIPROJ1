@@ -37,7 +37,6 @@ def deleteRequest(user, conn ,cursor):
 
 def searchRequest(user, conn, cursor):
     search = location.findLocation(input('Search location keyword: '), conn, cursor)
-    print('Type back to exit or select to take request')
     cursor.execute('SELECT * FROM requests WHERE requests.pickup = ?'(search))
     requests = cursor.fetchall()
     page = 0

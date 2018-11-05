@@ -47,5 +47,38 @@ def offerRide(user, conn, cursor):
     (rno, price, rdate, seats, lugDesc, src[0], dest[0], user, cno))
     conn.commit()
 
-def searchRide():
-    return 1
+def searchRide(user, conn, cursor):
+    search = location.findLocation(input('Search location keyword: '), conn, cursor)
+    cursor.execute('''
+        SELECT *
+        FROM rides
+        WHERE rides.src = ?
+        UNION
+        SELECT *
+        FROM rides
+        WHERE rides.dst = ?;''',
+        ('%'+search+'%','%'+search+'%'))
+    rides = cursor.fetchall()
+    page = 0
+    while page*5 < len(rides):
+        print('Rides: ')
+        for i in range(0,min(5,len(rides)-page*5)):
+            print(i+1,rides[i+page*5])
+        print(6, 'More options')
+        choice = None
+        try:
+            choice = int(input('Choice: '))
+            if choice >= 1 and choice <= 5:
+                selected = rides[choice+page*5-1]
+            elif choice == 6:
+                page += 1
+            else:
+                print('Invalid choice, please choose from selection')
+        except:
+            print('Not a valid input, please enter a ride')
+    if rides == None:
+        print('No rides found with keyword. Please try again')
+        search = location.findLocation(input('Search location keyword: '), conn, cursor)
+    content = input('Enter message to poster: ')
+    cursor.execute("INSERT INTO inbox VALUES(?.driver,datetime('now'),?,?,?.rno,?);"(selected, user, content, selected, 'n'))
+    conn.commit()
