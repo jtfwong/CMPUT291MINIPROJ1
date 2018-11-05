@@ -4,6 +4,7 @@ import menu
 import location
 import rides
 import requests
+import bookings
 
 class JavinDrive():
     def __init__(self):
@@ -154,6 +155,8 @@ class JavinDrive():
                 requests.deleteRequest(self.user,self.conn,self.cursor)
             if user_input == 'search requests':
                 requests.searchRequest(self.user,self.conn,self.cursor)
+            if user_input == 'cancel bookings':
+                bookings.cancelBook(self.user,self.conn,self.cursor)
 
 if __name__ == "__main__":
     app = JavinDrive()

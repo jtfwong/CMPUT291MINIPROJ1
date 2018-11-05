@@ -16,7 +16,7 @@ def deleteRequest(user, conn ,cursor):
     cursor.execute('SELECT * FROM requests WHERE requests.email = ?' (user))
     requests = cursor.fetchall()
     for each in requests:
-        print(each["rid"], each["user"], each["rdate"], each["pickup"], each["dropoff"], each["amount"])
+        print(each["rid"], each["email"], each["rdate"], each["pickup"], each["dropoff"], each["amount"])
     back = False
     while not back:
         user_input = input('JavinDrive: ')
@@ -31,6 +31,7 @@ def deleteRequest(user, conn ,cursor):
                     cancel = True
                 if confirm == 'yes':
                     cursor.execute('DELETE FROM requests WHERE requests.rno = ?', (rno))
+                    conn.commit()
                     cancel = True
             back = True
 
