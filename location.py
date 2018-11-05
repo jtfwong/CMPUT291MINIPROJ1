@@ -19,8 +19,12 @@ def findLocation(lcode,conn,cursor):
         UNION
         SELECT *
         FROM locations
+        WHERE locations.lcode LIKE ?
+        UNION
+        SELECT *
+        FROM locations
         WHERE locations.address LIKE ?;''',
-        ('%'+lcode+'%','%'+lcode+'%','%'+lcode+'%'))
+        ('%'+lcode+'%','%'+lcode+'%','%'+lcode+'%','%'+lcode+'%'))
         locations = cursor.fetchall()
         page = 0
         while page*5 < len(locations):

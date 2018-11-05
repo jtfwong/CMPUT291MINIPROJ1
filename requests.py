@@ -4,12 +4,13 @@ def postRequest(user, conn, cursor):
     pickup = location.findLocation(input('Starting location: '), conn, cursor)
     dropoff = location.findLocation(input('Destination location: '), conn, cursor)
     amount = input('Price per seat: $')
-    print(rdate,pickup,dropoff,price)
+    print(rdate,pickup,dropoff,amount)
 
     cursor.execute('SELECT COUNT(*) FROM requests;')
     rid = cursor.fetchone()[0] + 1
-    cursor.execute('INSERT INTO requests VALUES(?,?,?,?,?,?);', (rid, user, rdate, pickup, dropoff, amount))
+    cursor.execute("INSERT INTO requests VALUES(?,?,?,?,?,?);", (rid, user, rdate, pickup[0], dropoff[0], amount))
     conn.commit()
+    print('Request posted')
 
 def deleteRequest(user, conn ,cursor):
     print('Type back to exit or delete to remove request')
@@ -38,7 +39,7 @@ def deleteRequest(user, conn ,cursor):
 
 def searchRequest(user, conn, cursor):
     search = location.findLocation(input('Search location keyword: '), conn, cursor)
-    cursor.execute('SELECT * FROM requests WHERE requests.pickup = ?;'(search))
+    cursor.execute('SELECT * FROM requests WHERE requests.pickup = ?;', (search[0],))
     requests = cursor.fetchall()
     page = 0
     while page*5 < len(requests):
@@ -52,8 +53,9 @@ def searchRequest(user, conn, cursor):
             if choice >= 1 and choice <= 5:
                 selected = requests[choice+page*5-1]
                 content = input('Enter message to poster: ')
-                cursor.execute("INSERT INTO inbox VALUES(?.email,datetime('now'),?,?,?.rid,?);"(selected, user, content, selected, 'n'))
+                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);"(selected[1], user, content, selected[0], 'n'))
                 conn.commit()
+
             elif choice == 6:
                 page += 1
             else:

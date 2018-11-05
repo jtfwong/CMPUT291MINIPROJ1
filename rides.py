@@ -56,8 +56,8 @@ def searchRide(user, conn, cursor):
         UNION
         SELECT *
         FROM rides
-        WHERE rides.dst = ?;''',
-        ('%'+search+'%','%'+search+'%'))
+        WHERE rides.dest = ?;''',
+        ('%'+search[0]+'%','%'+search[0]+'%'))
     rides = cursor.fetchall()
     page = 0
     while page*5 < len(rides):
