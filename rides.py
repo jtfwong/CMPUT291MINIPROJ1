@@ -83,7 +83,6 @@ def searchRide(user, conn, cursor):
         LEFT JOIN enroute ON enroute.rno = rides.rno
         LEFT JOIN cars ON cars.cno = rides.cno
         WHERE rides.src = ?
-<<<<<<< HEAD
         OR rides.dest = ?
         OR enroute.lcode = ?;''',
         (l[0],l[0],l[0]))
@@ -92,10 +91,6 @@ def searchRide(user, conn, cursor):
             if t not in rides:
                 rides.append(t)
     print(rides)
-=======
-        OR rides.dest = ?;''', (search[0],search[0],))
-    rides = cursor.fetchall()
->>>>>>> origin
     page = 0
     while page*5 < len(rides):
         print('Rides: ')
