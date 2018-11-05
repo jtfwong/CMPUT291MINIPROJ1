@@ -24,15 +24,16 @@ def bookMembers(user, conn, cursor):
                                   AND seats = ?
                                   AND costs = ?
                                   AND pickup = ?
-                                  AND dropoff = ?;'''
-                                  ('%'+email+'%','%'+seats+'%','%'+cost+'%','%'+pickup+'%','%'+dropoff+'%'))
+                                  AND dropoff = ?;''',
+                                  (email,seats,cost,pickup,dropoff,))
                 rno = cursor.fetchone()
                 cursor.execute('SELECT COUNT(*) FROM bookings;')
                 bno = cursor.fetchone()[0] + 1
-                cursor.execute('INSERT INTO bookings VALUES(?,?,?,?,?,?,?);'(bno, email, rno, cost, seats,pickup,dropoff))
+                cursor.execute('INSERT INTO bookings VALUES(?,?,?,?,?,?,?);', (bno, email, rno, cost, seats, pickup, dropoff,))
                 content = print('Booking has been confirmed')
-                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);"(email, user, content, rno, 'n'))
-                
+                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');", (email, user, content, rno,))
+                conn.commit()
+                break
             elif choice == 'more options':
                 page += 1
             else:
@@ -45,10 +46,9 @@ def bookMembers(user, conn, cursor):
 
 def cancelBook(user, conn, cursor):
     print('Type back to exit or cancel to remove booking')
-    cursor.execute('SELECT * FROM bookings WHERE bookings.email = ?;' (user))
+    cursor.execute('SELECT * FROM bookings WHERE bookings.email = ?;', (user))
     bookings = cursor.fetchall()
-    for each in bookings:
-        print(each["bno"], each["email"], each["rno"], each["cost"], each["seats"], each["pickup"], each["dropoff"])
+    print(bookings)
     back = False
     while not back:
         user_input = input('JavinDrive: ')
@@ -58,15 +58,16 @@ def cancelBook(user, conn, cursor):
             cancel = False
             while not cancel:
                 bno = input('Enter bno to delete: ')
-                confirm = ('Confirm delete?(yes/no): ')
+                confirm = input('Confirm delete?(yes/no): ')
                 if confirm == 'no':
                     cancel = True
                 if confirm == 'yes':
                     cursor.execute('SELECT * FROM bookings WHERE bookings.bno = ?;'(bno))
                     toDelete = cursor.fetchone()
                     content = print('Booking has been cancelled')
-                    cursor.execute("INSERT INTO inbox VALUES(?.email,datetime('now'),?,?,?.rno,?);"(toDelete, user, content, toDelete, 'n'))
-                    cursor.execute('DELETE FROM bookings WHERE bookings.bno = ?;', (bno))
+                    cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');"(toDelete[1], user, content, toDelete[2],))
+                    cursor.execute('DELETE FROM bookings WHERE bookings.bno = ?;', (bno,))
                     conn.commit()
+                    print('Booking cancelled')
                     cancel = True
-            back = True
+        back = True
