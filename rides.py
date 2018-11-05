@@ -48,6 +48,20 @@ def offerRide(user, conn, cursor):
     conn.commit()
 
 def searchRide(user, conn, cursor):
+    numkey = None
+    while numkey == None:
+        try:
+            user_input = int(input('Number of keyword(s) (1-3): '))
+            if user_input >=1 and user_input<=3:
+                numkey = user_input
+            else:
+                print('Invalid number, please enter a number from 1-3.')
+        except:
+            print('Invalid input, please enter a number from 1-3.')
+    keywords = list()
+    for i in range(0,numkey):
+        keywords.append(input('Keyword ' + str(i) + ': '))
+    print(keywords)
     search = location.findLocation(input('Search location keyword: '), conn, cursor)
     cursor.execute('''
         SELECT *

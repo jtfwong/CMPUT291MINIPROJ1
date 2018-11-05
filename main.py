@@ -143,7 +143,7 @@ class JavinDrive():
             if user_input == 'menu':
                 self.menu.showMenu()
             if user_input == 'search':
-                lcode = input('Location: ')
+                lcode = input('Location: ').lower()
                 print(location.findLocation(lcode,self.conn,self.cursor))
             if user_input == 'offer ride':
                 rides.offerRide(self.user,self.conn,self.cursor)
