@@ -1,7 +1,7 @@
 import location
 
 def bookMembers(user, conn, cursor):
-    cursor.execute('SELECT * FROM rides)
+    cursor.execute('SELECT * FROM rides;')
     rides = cursor.fetchall()
     page = 0
     while page*5 < len(rides):
