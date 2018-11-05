@@ -43,7 +43,7 @@ def offerRide(user, conn, cursor):
         en_loc.append(location.findLocation(input('Enroute location '+str(i)+': '), conn, cursor))
     cursor.execute('SELECT COUNT(*) FROM rides;')
     rno = cursor.fetchone()[0] + 1
-    cursor.execute('INSERT INTO rides VALUES(?,?,?,?,?,?,?,?,?)',
+    cursor.execute('INSERT INTO rides VALUES(?,?,?,?,?,?,?,?,?);',
     (rno, price, rdate, seats, lugDesc, src[0], dest[0], user, cno))
     conn.commit()
 

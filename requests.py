@@ -13,7 +13,7 @@ def postRequest(user, conn, cursor):
 
 def deleteRequest(user, conn ,cursor):
     print('Type back to exit or delete to remove request')
-    cursor.execute('SELECT * FROM requests WHERE requests.email = ?' (user))
+    cursor.execute('SELECT * FROM requests WHERE requests.email = ?;' (user))
     requests = cursor.fetchall()
     for each in requests:
         print(each["rid"], each["email"], each["rdate"], each["pickup"], each["dropoff"], each["amount"])
@@ -30,7 +30,7 @@ def deleteRequest(user, conn ,cursor):
                 if confirm == 'no':
                     cancel = True
                 if confirm == 'yes':
-                    cursor.execute('DELETE FROM requests WHERE requests.rno = ?', (rno))
+                    cursor.execute('DELETE FROM requests WHERE requests.rno = ?;', (rno))
                     conn.commit()
                     cancel = True
             back = True
@@ -38,7 +38,7 @@ def deleteRequest(user, conn ,cursor):
 
 def searchRequest(user, conn, cursor):
     search = location.findLocation(input('Search location keyword: '), conn, cursor)
-    cursor.execute('SELECT * FROM requests WHERE requests.pickup = ?'(search))
+    cursor.execute('SELECT * FROM requests WHERE requests.pickup = ?;'(search))
     requests = cursor.fetchall()
     page = 0
     while page*5 < len(requests):

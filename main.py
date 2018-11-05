@@ -155,6 +155,8 @@ class JavinDrive():
                 requests.deleteRequest(self.user,self.conn,self.cursor)
             if user_input == 'search requests':
                 requests.searchRequest(self.user,self.conn,self.cursor)
+            if user_input == 'book members':
+                bookings.bookMembers(self.user,self.conn,self.cursor)
             if user_input == 'cancel bookings':
                 bookings.cancelBook(self.user,self.conn,self.cursor)
 
