@@ -61,21 +61,40 @@ def searchRide(user, conn, cursor):
     keywords = list()
     for i in range(0,numkey):
         keywords.append(input('Keyword ' + str(i) + ': '))
-    print(keywords)
-    search = location.findLocation(input('Search location keyword: '), conn, cursor)
-    cursor.execute('''
+    locations = list()
+    for k in keywords:
+        cursor.execute('''
+        SELECT locations.lcode
+        FROM locations
+        WHERE locations.lcode = ?
+        OR locations.city LIKE ?
+        OR locations.prov LIKE ?
+        OR locations.address LIKE ?;''',
+        (k,'%'+k+'%','%'+k+'%','%'+k+'%'))
+        lcodes = cursor.fetchall()
+        for l in lcodes:
+            if l not in locations:
+                locations.append(l)
+    rides = list()
+    for l in locations:
+        cursor.execute('''
         SELECT *
         FROM rides
+        LEFT JOIN enroute ON enroute.rno = rides.rno
+        LEFT JOIN cars ON cars.cno = rides.cno
         WHERE rides.src = ?
-        UNION
-        SELECT *
-        FROM rides
-        WHERE rides.dest = ?;''',
-        ('%'+search[0]+'%','%'+search[0]+'%'))
-    rides = cursor.fetchall()
+        OR rides.dest = ?
+        OR enroute.lcode = ?;''',
+        (l[0],l[0],l[0]))
+        test = cursor.fetchall()
+        for t in test:
+            if t not in rides:
+                rides.append(t)
+    print(rides)
     page = 0
     while page*5 < len(rides):
         print('Rides: ')
+        print('(Ride no., Price, Date, Seats, Luggage Description, Pickup lcode, Dropoff lcode, Driver, Car number, Car info)')
         for i in range(0,min(5,len(rides)-page*5)):
             print(i+1,rides[i+page*5])
         print(6, 'More options')
@@ -96,4 +115,3 @@ def searchRide(user, conn, cursor):
             print('Not a valid input, please enter a ride')
     if rides == None:
         print('No rides found with keyword. Please try again')
-        search = location.findLocation(input('Search location keyword: '), conn, cursor)

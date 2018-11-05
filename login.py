@@ -22,11 +22,11 @@ def logScreen(conn,cursor):
         AND inbox.seen = 'n';''',
         (username,))
         msgs = cursor.fetchall()
-        print('You have ' + str(len(msgs)) + ' messages.')
-        for m in msg:
+        print('You have ' + str(len(msgs)) + ' new messages.')
+        for m in msgs:
             print('Sender: ' + m[0])
             print('Time: ' + m[1])
-            print('Ride number: ' +m[2])
+            print('Ride number: ' + str(m[2]))
             print('Message: ' + m[3])
         cursor.execute('''
         UPDATE inbox SET
