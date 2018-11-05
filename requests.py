@@ -14,10 +14,9 @@ def postRequest(user, conn, cursor):
 
 def deleteRequest(user, conn ,cursor):
     print('Type back to exit or delete to remove request')
-    cursor.execute('SELECT * FROM requests WHERE requests.email = ?;' (user))
+    cursor.execute('SELECT * FROM requests WHERE requests.email = ?;', (user,))
     requests = cursor.fetchall()
-    for each in requests:
-        print(each["rid"], each["email"], each["rdate"], each["pickup"], each["dropoff"], each["amount"])
+    print(requests)
     back = False
     while not back:
         user_input = input('JavinDrive: ')
@@ -26,15 +25,16 @@ def deleteRequest(user, conn ,cursor):
         if user_input == 'delete':
             cancel = False
             while not cancel:
-                rno = input('Enter rno to delete: ')
-                confirm = ('Confirm delete?(yes/no): ')
+                rid = input('Enter rid to delete: ')
+                confirm = input('Confirm delete?(yes/no): ')
                 if confirm == 'no':
                     cancel = True
                 if confirm == 'yes':
-                    cursor.execute('DELETE FROM requests WHERE requests.rno = ?;', (rno))
+                    cursor.execute('DELETE FROM requests WHERE requests.rid = ?;', (rid,))
                     conn.commit()
+                    print('Request deleted')
                     cancel = True
-            back = True
+        back = True
 
 
 def searchRequest(user, conn, cursor):
@@ -53,9 +53,10 @@ def searchRequest(user, conn, cursor):
             if choice >= 1 and choice <= 5:
                 selected = requests[choice+page*5-1]
                 content = input('Enter message to poster: ')
-                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);"(selected[1], user, content, selected[0], 'n'))
+                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');", (selected[1], user, content, selected[0],))
                 conn.commit()
-
+                print('Message sent')
+                break
             elif choice == 6:
                 page += 1
             else:
