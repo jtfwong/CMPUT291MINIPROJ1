@@ -70,6 +70,9 @@ def searchRide(user, conn, cursor):
             choice = int(input('Choice: '))
             if choice >= 1 and choice <= 5:
                 selected = rides[choice+page*5-1]
+                content = input('Enter message to poster: ')
+                cursor.execute("INSERT INTO inbox VALUES(?.driver,datetime('now'),?,?,?.rno,?);"(selected, user, content, selected, 'n'))
+                conn.commit()
             elif choice == 6:
                 page += 1
             else:
@@ -79,6 +82,3 @@ def searchRide(user, conn, cursor):
     if rides == None:
         print('No rides found with keyword. Please try again')
         search = location.findLocation(input('Search location keyword: '), conn, cursor)
-    content = input('Enter message to poster: ')
-    cursor.execute("INSERT INTO inbox VALUES(?.driver,datetime('now'),?,?,?.rno,?);"(selected, user, content, selected, 'n'))
-    conn.commit()

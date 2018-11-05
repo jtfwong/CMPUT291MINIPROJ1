@@ -17,11 +17,15 @@ def cancelBook():
         if user_input == 'cancel':
             cancel = False
             while not cancel:
-                rno = input('Enter bno to delete: ')
+                bno = input('Enter bno to delete: ')
                 confirm = ('Confirm delete?(yes/no): ')
                 if confirm == 'no':
                     cancel = True
                 if confirm == 'yes':
+                    cursor.execute('SELECT * FROM bookings WHERE bookings.bno = ?'(bno))
+                    toDelete = cursor.fetchone()
+                    content = print('Booking has been cancelled')
+                    cursor.execute("INSERT INTO inbox VALUES(?.email,datetime('now'),?,?,?.rno,?);"(toDelete, user, content, toDelete, 'n'))
                     cursor.execute('DELETE FROM bookings WHERE bookings.bno = ?', (bno))
                     conn.commit()
                     cancel = True
