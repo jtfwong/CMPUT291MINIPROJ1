@@ -17,22 +17,32 @@ def bookMembers(user, conn, cursor):
                 email = input("Enter member's email: ")
                 seats = input('Enter number of seats to book: ')
                 cost = input('Cost per seat: $')
-                pickup = location.findLocation(input('Starting location: '), conn, cursor)
-                dropoff = location.findLocation(input('Destination location: '), conn, cursor)
+                pickup = input('Starting location code: ')
+                dropoff = input('Destination location code: ')
+                print('test 1')
                 cursor.execute('''SELECT rno FROM rides
-                                  WHERE email = ?
-                                  AND seats = ?
-                                  AND costs = ?
-                                  AND pickup = ?
-                                  AND dropoff = ?;''',
-                                  (email,seats,cost,pickup,dropoff,))
+                                  WHERE driver = ?
+                                  AND price = ?
+                                  AND src = ?
+                                  AND dest = ?;''', (email, cost, pickup ,dropoff,))
+                print('test 2')
                 rno = cursor.fetchone()
+                print('test 3')
+                print(rno)
                 cursor.execute('SELECT COUNT(*) FROM bookings;')
+                print('test 4')
                 bno = cursor.fetchone()[0] + 1
+                print(rno)
+                print(bno)
+                print('test 5')
                 cursor.execute('INSERT INTO bookings VALUES(?,?,?,?,?,?,?);', (bno, email, rno, cost, seats, pickup, dropoff,))
+                print('test 6')
                 content = print('Booking has been confirmed')
+                print('test 7')
                 cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');", (email, user, content, rno,))
+                print('test 8')
                 conn.commit()
+                print('test 9')
                 break
             elif choice == 'more options':
                 page += 1
