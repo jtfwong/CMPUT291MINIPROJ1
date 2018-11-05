@@ -83,6 +83,7 @@ def searchRide(user, conn, cursor):
         LEFT JOIN enroute ON enroute.rno = rides.rno
         LEFT JOIN cars ON cars.cno = rides.cno
         WHERE rides.src = ?
+<<<<<<< HEAD
         OR rides.dest = ?
         OR enroute.lcode = ?;''',
         (l[0],l[0],l[0]))
@@ -91,6 +92,10 @@ def searchRide(user, conn, cursor):
             if t not in rides:
                 rides.append(t)
     print(rides)
+=======
+        OR rides.dest = ?;''', (search[0],search[0],))
+    rides = cursor.fetchall()
+>>>>>>> origin
     page = 0
     while page*5 < len(rides):
         print('Rides: ')
@@ -104,7 +109,8 @@ def searchRide(user, conn, cursor):
             if choice >= 1 and choice <= 5:
                 selected = rides[choice+page*5-1]
                 content = input('Enter message to poster: ')
-                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);", (selected[7], user, content, selected[0], 'n'))
+                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');", (selected[7], user, content, selected[0],))
+                print('Message sent')
                 conn.commit()
                 break
             elif choice == 6:
