@@ -142,22 +142,19 @@ class JavinDrive():
                 print('Logged out')
             if user_input == 'menu':
                 self.menu.showMenu()
-            if user_input == 'search':
-                lcode = input('Location: ').lower()
-                print(location.findLocation(lcode,self.conn,self.cursor))
             if user_input == 'offer ride':
                 rides.offerRide(self.user,self.conn,self.cursor)
             if user_input == 'search ride':
                 rides.searchRide(self.user,self.conn,self.cursor)
             if user_input == 'post request':
                 requests.postRequest(self.user,self.conn,self.cursor)
-            if user_input == 'delete requests':
+            if user_input == 'delete request':
                 requests.deleteRequest(self.user,self.conn,self.cursor)
-            if user_input == 'search requests':
+            if user_input == 'take request':
                 requests.searchRequest(self.user,self.conn,self.cursor)
-            if user_input == 'book members':
+            if user_input == 'book member':
                 bookings.bookMembers(self.user,self.conn,self.cursor)
-            if user_input == 'cancel bookings':
+            if user_input == 'cancel booking':
                 bookings.cancelBook(self.user,self.conn,self.cursor)
 
 if __name__ == "__main__":
