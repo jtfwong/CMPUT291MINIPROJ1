@@ -71,8 +71,9 @@ def searchRide(user, conn, cursor):
             if choice >= 1 and choice <= 5:
                 selected = rides[choice+page*5-1]
                 content = input('Enter message to poster: ')
-                cursor.execute("INSERT INTO inbox VALUES(?.driver,datetime('now'),?,?,?.rno,?);"(selected, user, content, selected, 'n'))
+                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);", (selected[7], user, content, selected[0], 'n'))
                 conn.commit()
+                break
             elif choice == 6:
                 page += 1
             else:

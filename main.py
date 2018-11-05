@@ -151,7 +151,7 @@ class JavinDrive():
                 rides.searchRide(self.user,self.conn,self.cursor)
             if user_input == 'post request':
                 requests.postRequest(self.user,self.conn,self.cursor)
-            if user_input == 'see requests':
+            if user_input == 'delete requests':
                 requests.deleteRequest(self.user,self.conn,self.cursor)
             if user_input == 'search requests':
                 requests.searchRequest(self.user,self.conn,self.cursor)
