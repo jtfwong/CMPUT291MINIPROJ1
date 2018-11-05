@@ -28,8 +28,9 @@ def bookMembers(user, conn, cursor):
                 cursor.execute('SELECT COUNT(*) FROM bookings;')
                 bno = cursor.fetchone()[0] + 1
                 cursor.execute('INSERT INTO bookings VALUES(?,?,?,?,?,?,?);', (bno, email, rno[0], cost, seats, pickup, dropoff,))
-                content = print('Booking has been confirmed')
+                content = 'Booking for '+str(rno)+' has been confirmed'
                 cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');", (email, user, content, rno[0],))
+                print('Booking confirmed')
                 conn.commit()
                 break
             elif choice == 'more options':

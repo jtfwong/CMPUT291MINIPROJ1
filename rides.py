@@ -90,7 +90,7 @@ def searchRide(user, conn, cursor):
         for t in test:
             if t not in rides:
                 rides.append(t)
-    print(rides)
+
     page = 0
     while page*5 < len(rides):
         print('Rides: ')
