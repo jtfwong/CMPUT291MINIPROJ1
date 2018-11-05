@@ -53,11 +53,7 @@ def searchRide(user, conn, cursor):
         SELECT *
         FROM rides
         WHERE rides.src = ?
-        UNION
-        SELECT *
-        FROM rides
-        WHERE rides.dest = ?;''',
-        ('%'+search[0]+'%','%'+search[0]+'%'))
+        OR rides.dest = ?;''', (search[0],search[0],))
     rides = cursor.fetchall()
     page = 0
     while page*5 < len(rides):
@@ -71,7 +67,8 @@ def searchRide(user, conn, cursor):
             if choice >= 1 and choice <= 5:
                 selected = rides[choice+page*5-1]
                 content = input('Enter message to poster: ')
-                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);", (selected[7], user, content, selected[0], 'n'))
+                cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');", (selected[7], user, content, selected[0],))
+                print('Message sent')
                 conn.commit()
                 break
             elif choice == 6:
