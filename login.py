@@ -13,8 +13,27 @@ def logScreen(conn,cursor):
     if result == None:
         print('Username and Password not found')
         return
-    if result[3] == password:
+    else:
         print('Welcome ' + result[1])
+        cursor.execute('''
+        SELECT inbox.sender, inbox.msgTimestamp, inbox.rno, inbox.content
+        FROM inbox
+        WHERE inbox.email = ?
+        AND inbox.seen = 'n';''',
+        (username,))
+        msgs = cursor.fetchall()
+        print('You have ' + str(len(msgs)) + ' new messages.')
+        for m in msgs:
+            print('Sender: ' + m[0])
+            print('Time: ' + m[1])
+            print('Ride number: ' + str(m[2]))
+            print('Message: ' + m[3])
+        cursor.execute('''
+        UPDATE inbox SET
+        seen = 'y'
+        WHERE inbox.email = ?
+        AND inbox.seen = 'n';''',
+        (username,))
         return result[0],result[1]
 
 def register(conn,cursor):

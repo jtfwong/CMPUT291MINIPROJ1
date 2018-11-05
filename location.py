@@ -46,3 +46,5 @@ def findLocation(lcode,conn,cursor):
         if location == None:
             print('No locations found with keyword. Please try again')
             return findLocation(input('Location: '),conn,cursor)
+def rideLocationSearch(lcode,conn,cursor):
+    return

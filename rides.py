@@ -48,16 +48,53 @@ def offerRide(user, conn, cursor):
     conn.commit()
 
 def searchRide(user, conn, cursor):
-    search = location.findLocation(input('Search location keyword: '), conn, cursor)
-    cursor.execute('''
+    numkey = None
+    while numkey == None:
+        try:
+            user_input = int(input('Number of keyword(s) (1-3): '))
+            if user_input >=1 and user_input<=3:
+                numkey = user_input
+            else:
+                print('Invalid number, please enter a number from 1-3.')
+        except:
+            print('Invalid input, please enter a number from 1-3.')
+    keywords = list()
+    for i in range(0,numkey):
+        keywords.append(input('Keyword ' + str(i) + ': '))
+    locations = list()
+    for k in keywords:
+        cursor.execute('''
+        SELECT locations.lcode
+        FROM locations
+        WHERE locations.lcode = ?
+        OR locations.city LIKE ?
+        OR locations.prov LIKE ?
+        OR locations.address LIKE ?;''',
+        (k,'%'+k+'%','%'+k+'%','%'+k+'%'))
+        lcodes = cursor.fetchall()
+        for l in lcodes:
+            if l not in locations:
+                locations.append(l)
+    rides = list()
+    for l in locations:
+        cursor.execute('''
         SELECT *
         FROM rides
+        LEFT JOIN enroute ON enroute.rno = rides.rno
+        LEFT JOIN cars ON cars.cno = rides.cno
         WHERE rides.src = ?
-        OR rides.dest = ?;''', (search[0],search[0],))
-    rides = cursor.fetchall()
+        OR rides.dest = ?
+        OR enroute.lcode = ?;''',
+        (l[0],l[0],l[0]))
+        test = cursor.fetchall()
+        for t in test:
+            if t not in rides:
+                rides.append(t)
+    print(rides)
     page = 0
     while page*5 < len(rides):
         print('Rides: ')
+        print('(Ride no., Price, Date, Seats, Luggage Description, Pickup lcode, Dropoff lcode, Driver, Car number, Car info)')
         for i in range(0,min(5,len(rides)-page*5)):
             print(i+1,rides[i+page*5])
         print(6, 'More options')
@@ -79,4 +116,3 @@ def searchRide(user, conn, cursor):
             print('Not a valid input, please enter a ride')
     if rides == None:
         print('No rides found with keyword. Please try again')
-        search = location.findLocation(input('Search location keyword: '), conn, cursor)
