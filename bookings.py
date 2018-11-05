@@ -63,7 +63,7 @@ def cancelBook(user, conn, cursor):
                 if confirm == 'yes':
                     cursor.execute('SELECT * FROM bookings WHERE bookings.bno = ?;',(bno,))
                     toDelete = cursor.fetchone()
-                    content = print('Booking has been cancelled')
+                    content = 'Booking has been cancelled'
                     cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,'n');",(toDelete[1], user, content, toDelete[2],))
                     cursor.execute('DELETE FROM bookings WHERE bookings.bno = ?;', (bno,))
                     conn.commit()
