@@ -149,8 +149,10 @@ class JavinDrive():
             if user_input == 'post request':
                 requests.postRequest(self.user,self.conn,self.cursor)
             if user_input == 'see requests':
-                requests.deleteRequest(self.user,self.conn,self,cursor)
-                
+                requests.deleteRequest(self.user,self.conn,self.cursor)
+            if user_input == 'search requests':
+                requests.searchRequest(self.user,self.conn,self.cursor)
+
 if __name__ == "__main__":
     app = JavinDrive()
     app.app_loop()

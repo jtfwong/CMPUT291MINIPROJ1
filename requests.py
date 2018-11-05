@@ -35,7 +35,7 @@ def deleteRequest(user, conn ,cursor):
             back = True
 
 
-def searchRequest():
+def searchRequest(user, conn, cursor):
     search = location.findLocation(input('Search location keyword: '), conn, cursor)
     print('Type back to exit or select to take request')
     cursor.execute('SELECT * FROM requests WHERE requests.pickup = ?'(search))
@@ -61,5 +61,5 @@ def searchRequest():
         print('No requests found with keyword. Please try again')
         search = location.findLocation(input('Search location keyword: '), conn, cursor)
     content = input('Enter message to poster: ')
-    cursor.execute("INSERT INTO inbox VALUES(?,datetime('now'),?,?,?,?);"(selected(email), user, content, selected[rid], 0))
+    cursor.execute("INSERT INTO inbox VALUES(?.email,datetime('now'),?,?,?.rid,?);"(selected, user, content, selected, 'n'))
     conn.commit()
